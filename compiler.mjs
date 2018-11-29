@@ -1,5 +1,6 @@
+import fs from 'fs'
+
 const
-fs=require('fs'),
 asyncMap=function(arr,cb)
 {
 	return arr.reduce(async function(promiseArr,item)
@@ -14,16 +15,17 @@ callback2promise=function(func,...args)
 		func(...args,(err,data)=>err?rej(err):res(data))
 	})
 },
-readFile=async path=>callback2promise(fs.readFile,path,'utf8')
+readFile=async path=>callback2promise(fs.readFile,path,'utf8'),
+src2dest=src=>src.split('/').filter(x=>x.length).slice(0,-1).join('/')+'/'
 
-;(async function()
+export default async function(src,dest=src2dest(src))
 {
 	const
 	filepaths='index,config,util,logic,input,output'
 		.split(',')
-		.map(name=>__dirname+'/src/'+name+'.js'),
+		.map(name=>src+name+'.js'),
 	files=await asyncMap(filepaths,readFile).catch(console.error)
 
-	await callback2promise(fs.writeFile,__dirname+'/index.js',files.join('\n'))
+	await callback2promise(fs.writeFile,dest+'index.js',files.join('\n'))
 	.catch(console.error)
-})()
+}
