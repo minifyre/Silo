@@ -24,7 +24,8 @@ export default async function(src,dest=src2dest(src))
 	filepaths='index,config,util,logic,input,output'
 		.split(',')
 		.map(name=>src+name+'.js'),
-	files=await asyncMap(filepaths,readFile).catch(console.error)
+	getFile=path=>readFile(path).catch(()=>''),
+	files=await asyncMap(filepaths,getFile)
 
 	await callback2promise(fs.writeFile,dest+'index.js',files.join('\n'))
 	.catch(console.error)
