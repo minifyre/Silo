@@ -27,19 +27,23 @@ input=function(state,evt)
 	const fn=el.getAttribute(attr)
 	return input[fn](state,Object.assign({},evt,{target:el}))
 }
+
 util.assignNested=function(obj,...srcs)
 {
 	const isObj=x=>x&&typeof x==='object'&&!Array.isArray(x)
 
-	return !srcs.length?obj:srcs.reduce(function(obj,src)
+	srcs.forEach(function(src)
 	{
-		return !(isObj(obj)&&isObj(src))?obj:
-		Object.entries(src).reduce(function(obj,[key,val])
-		{
-			!isObj(val)||!obj[key]?obj[key]=x:util.assignNested(obj[key],val)
-		},obj)
+		if(![obj,src].every(isObj)) return
 
-	},obj)
+		Object.entries(src).forEach(function([key,val])
+		{
+			!isObj(val)||!obj[key]?obj[key]=val:
+			util.assignNested(obj[key],val)
+		})
+	})
+
+	return obj
 }
 util.clone=x=>JSON.parse(JSON.stringify(x))
 util.curry=(fn,...xs)=>(...ys)=>fn(...xs,...ys)
@@ -76,7 +80,8 @@ util.mkCustomEl=async function(url='',customEl,customMkr)
 }
 util.mkState=function(opts)
 {
-	const state=util.assignNested({},config.state,opts)
+	const state=Object.assign({},config.state,opts)
+
 	state.file.id=util.id()
 	state.view.id=util.id()
 	state.view.file=state.file.id

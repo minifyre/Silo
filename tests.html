@@ -1,0 +1,14 @@
+<!Doctype html>
+<script type=module>
+	import cherub from './node_modules/cherub/cherub.mjs'
+	import silo from './index.js'
+
+	const
+	{assignNested}=silo.util,
+	tests=
+	[
+		[()=>assignNested({a:{b:0,c:1}},{a:{c:2,d:3}}),{a:{b:0,c:2,d:3}},'nested assign']
+	],
+	opts={now:()=>performance.now()}
+	cherub(tests,opts)
+</script>
