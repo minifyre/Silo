@@ -80,8 +80,7 @@ util.mkCustomEl=async function(url='',customEl,customMkr)
 }
 util.mkState=function(opts)
 {
-	const state=Object.assign({},config.state,opts)
-
+	const state=util.assignNested({},config.state,opts)
 	state.file.id=util.id()
 	state.view.id=util.id()
 	state.view.file=state.file.id
