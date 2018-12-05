@@ -18,7 +18,7 @@ callback2promise=function(func,...args)
 readFile=async path=>callback2promise(fs.readFile,path,'utf8'),
 src2dest=src=>src.split('/').filter(x=>x.length).slice(0,-1).join('/')+'/'
 
-export default async function(src,dest=src2dest(src))
+export default async function compiler(src)
 {
 	const
 	filepaths='index,config,util,logic,input,output'
@@ -27,6 +27,12 @@ export default async function(src,dest=src2dest(src))
 	getFile=path=>readFile(path).catch(()=>''),
 	files=await asyncMap(filepaths,getFile)
 
-	await callback2promise(fs.writeFile,dest+'index.js',files.join('\n'))
+	return files.join('\n')//@todo can this be combined with previous line?
+}
+compiler.writer=function(src,dest=src2dest(src))
+{
+	const data=await compiler(src)
+
+	await callback2promise(fs.writeFile,dest+'index.js',data)
 	.catch(console.error)
 }
