@@ -29,7 +29,7 @@ export default async function compiler(src)
 
 	return files.join('\n')//@todo can this be combined with previous line?
 }
-compiler.writer=function(src,dest=src2dest(src))
+compiler.writer=async function(src,dest=src2dest(src))
 {
 	const data=await compiler(src)
 
