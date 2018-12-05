@@ -88,6 +88,6 @@ util.mkState=function(opts)
 }
 
 logic.normalize=x=>x
-output.render=x=>x
+output.render=state=>[]
 
 export default {config,util,logic,input,output}
