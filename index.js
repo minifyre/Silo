@@ -25,7 +25,7 @@ input=function(state,evt)
 	if(!el) return
 
 	const fn=el.getAttribute(attr)
-	return input[fn](state,Object.assign({},evt,{target:el}))
+	return input[fn](state,evt)
 }
 
 util.assignNested=function(obj,...srcs)
