@@ -90,4 +90,8 @@ util.mkState=function(opts)
 logic.normalize=x=>x
 output.render=state=>[]
 
-export default {config,util,logic,input,output}
+export default Object.assign(function silo(fn)
+{
+	return Object.assign(fn,silo)
+
+},{config,util,logic,input,output})
