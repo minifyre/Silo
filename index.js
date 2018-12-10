@@ -90,13 +90,7 @@ util.mkState=function(opts)
 logic.normalize=x=>x
 output.render=state=>[]
 
-export default Object.assign(function silo(fn)
-{
-	return Object.assign(fn,silo)
-
-},{config,util,logic,input,output})
-
-silo.customElement=class extends HTMLElement
+const customElement=class extends HTMLElement
 {
 	constructor(state,{logic,output}={})
 	{
@@ -112,3 +106,9 @@ silo.customElement=class extends HTMLElement
 		Object.assign(this.state,silo.logic(state))
 	}
 }
+
+export default Object.assign(function silo(fn)
+{
+	return Object.assign(fn,silo)
+
+},{config,util,logic,input,output,customElement})
