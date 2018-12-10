@@ -90,20 +90,25 @@ util.mkState=function(opts)
 logic.normalize=x=>x
 output.render=state=>[]
 
-const customElement=class extends HTMLElement
+const props={config,util,logic,input,output}
+
+if(typeof HTMLElement!=='undefined')
 {
-	constructor(state,{logic,output}={})
+	props.customElement=class extends HTMLElement
 	{
-		super()
-		const shadow=this.attachShadow({mode:'open'})
-		if(!logic) return
-		let renderer=x=>x
-		this.state=truth(logic(state),(...args)=>renderer(args)).state
-		this.render=renderer=v.render(shadow,this,output)
-	}
-	load(state)
-	{
-		Object.assign(this.state,silo.logic(state))
+		constructor(state,{logic,output}={})
+		{
+			super()
+			const shadow=this.attachShadow({mode:'open'})
+			if(!logic) return
+			let renderer=x=>x
+			this.state=truth(logic(state),(...args)=>renderer(args)).state
+			this.render=renderer=v.render(shadow,this,output)
+		}
+		load(state)
+		{
+			Object.assign(this.state,silo.logic(state))
+		}
 	}
 }
 
@@ -111,4 +116,4 @@ export default Object.assign(function silo(fn)
 {
 	return Object.assign(fn,silo)
 
-},{config,util,logic,input,output,customElement})
+},props)
