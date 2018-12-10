@@ -95,3 +95,20 @@ export default Object.assign(function silo(fn)
 	return Object.assign(fn,silo)
 
 },{config,util,logic,input,output})
+
+silo.customElement=class extends HTMLElement
+{
+	constructor(state,{logic,output}={})
+	{
+		super()
+		const shadow=this.attachShadow({mode:'open'})
+		if(!logic) return
+		let renderer=x=>x
+		this.state=truth(logic(state),(...args)=>renderer(args)).state
+		this.render=renderer=v.render(shadow,this,output)
+	}
+	load(state)
+	{
+		Object.assign(this.state,silo.logic(state))
+	}
+}
