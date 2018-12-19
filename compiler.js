@@ -39,7 +39,7 @@ export default async function compiler(src)
 	.reduce((a,b)=>a.concat(b.sort()),[])//flatten
 	.map(x=>keys.indexOf(x))
 	.map(i=>vals[i])
-	.filter(txt=>!!txt.length)
+	.filter(txt=>!!txt&&!!txt.length)
 	.join('\n')
 }
 compiler.writer=async function(src,dest=src2dest(src))
