@@ -9,18 +9,38 @@ asyncMap=function(arr,cb)
 	},Promise.resolve([]))
 },
 readFile=async path=>files.readFile(path,'utf8'),
-src2dest=src=>src.split('/').filter(x=>x.length).slice(0,-1).join('/')+'/'
+rmExt=txt=>txt.replace(/\.[^\.]+$/,''),
+src2dest=src=>src.split('/').filter(x=>x.length).slice(0,-1).join('/')+'/',
+categories='index,config,util,logic,input,output'
+	.split(',')
+	.reduce((obj,key)=>Object.assign(obj,{[key]:[]}),{})
 
 export default async function compiler(src)
 {
-	const
-	filepaths='index,config,util,logic,input,output'
-		.split(',')
-		.map(name=>src+name+'.js'),
-	getFile=path=>readFile(path).catch(()=>''),
-	files=await asyncMap(filepaths,getFile)
+	if(!src.match(/\/$/)) src+='/'//@todo integrate with file utils
 
-	return files.join('\n')//@todo can this be combined with previous line?
+	const
+	names=await files.readDir(src),
+	paths=names.map(name=>src+name),
+	vals=await asyncMap(paths,readFile),
+	keys=names.map(rmExt),
+	sortedNames=keys
+	.sort()
+	.reduce(function(rtn,key)
+	{
+		const [cat]=key.split('.')
+
+		rtn[cat]?rtn[cat].push(key):rtn[cat]=[key]
+
+		return rtn 
+	},Object.assign({},categories))
+
+	return Object.values(sortedNames)
+	.reduce((a,b)=>a.concat(b.sort()),[])//flatten
+	.map(x=>keys.indexOf(x))
+	.map(i=>vals[i])
+	.filter(txt=>!!txt.length)
+	.join('\n')
 }
 compiler.writer=async function(src,dest=src2dest(src))
 {
