@@ -33,7 +33,7 @@ export default async function compiler(src)
 		rtn[cat]?rtn[cat].push(key):rtn[cat]=[key]
 
 		return rtn 
-	},Object.assign({},categories))
+	},Object.assign({},JSON.parse(JSON.stringify(categories))))
 
 	return Object.values(sortedNames)
 	.reduce((a,b)=>a.concat(b.sort()),[])//flatten
