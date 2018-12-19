@@ -1,0 +1,13 @@
+{
+	"name": "Silo",
+	"description": "Another code organization paradigm.",
+	"homepage": "https://github.com/minifyre/silo",
+	"license": "MIT",
+	"version": "0.5.0",
+	"dependencies": {
+		"files": "minifyre/files"
+	},
+	"devDependencies": {
+		"cherub": "minifyre/cherub"
+	}
+}
