@@ -1,4 +1,4 @@
-import fs from 'fs'
+import files from 'files'
 
 const
 asyncMap=function(arr,cb)
@@ -8,14 +8,7 @@ asyncMap=function(arr,cb)
 		return [...await promiseArr,await cb(item)]
 	},Promise.resolve([]))
 },
-callback2promise=function(func,...args)
-{
-	return new Promise(function(res,rej)
-	{
-		func(...args,(err,data)=>err?rej(err):res(data))
-	})
-},
-readFile=async path=>callback2promise(fs.readFile,path,'utf8'),
+readFile=async path=>files.readFile(path,'utf8'),
 src2dest=src=>src.split('/').filter(x=>x.length).slice(0,-1).join('/')+'/'
 
 export default async function compiler(src)
@@ -33,6 +26,6 @@ compiler.writer=async function(src,dest=src2dest(src))
 {
 	const data=await compiler(src)
 
-	await callback2promise(fs.writeFile,dest+'index.js',data)
+	await files.writeFile(dest+'index.js',data)
 	.catch(console.error)
 }
