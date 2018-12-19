@@ -24,8 +24,9 @@ input=function(state,evt)
 
 	if(!el) return
 
-	const fn=el.getAttribute(attr)
-	return input[fn](state,evt)
+	const fn=input[el.getAttribute(attr)]
+
+	return fn(state,new Proxy(evt,{get:(_,prop)=>prop==='target'?el:evt[prop]}))
 }
 
 util.assignNested=function(obj,...srcs)
