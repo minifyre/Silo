@@ -48,6 +48,7 @@ util.assignNested=function(obj,...srcs)
 }
 util.clone=x=>JSON.parse(JSON.stringify(x))
 util.curry=(fn,...xs)=>(...ys)=>fn(...xs,...ys)
+util.curryN=(int,fn,...xs)=>(...ys)=>fn(...xs,...ys.slice(0,int))
 util.flatten=(a,b)=>a.concat(b)
 util.mkFile=(...opts)=>util.mk({encoding:'utf-8',modified:Date.now(),path:''},...opts)
 util.mkFileCode=(type='html',...opts)=>util.mkFile({category:'code',errors:[],type,value:''},...opts)
