@@ -1,6 +1,13 @@
-
 const
-config={state:{},newline:/\r\n?|\n/},
+config=
+{
+	state:
+	{
+		meta:{},
+		data:{}
+	},
+	newline:/\r\n?|\n/
+},
 util=
 {
 	id:()=>([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g,util.idHelper),
