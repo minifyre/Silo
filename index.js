@@ -3,8 +3,16 @@ config=
 {
 	state:
 	{
-		meta:{},
-		data:{}
+		file:
+		{
+			cache:{},
+			data:{},
+			meta:{}
+		},
+		view:
+		{
+			type:'custome-element'
+		},
 	},
 	newline:/\r\n?|\n/
 },
