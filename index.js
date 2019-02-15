@@ -53,6 +53,12 @@ util.assignNested=function(obj,...srcs)
 
 	return obj
 }
+util.box2style=function({height,x:left,y:top,width})
+{
+	return Object.entries({height,left,top,width})
+	.map(([prop,val])=>prop+':'+val+'%;')
+	.join(' ')
+}
 util.clone=x=>JSON.parse(JSON.stringify(x))
 util.curry=(fn,...xs)=>(...ys)=>fn(...xs,...ys)
 util.curryN=(int,fn,...xs)=>(...ys)=>fn(...xs,...ys.slice(0,int))
