@@ -1,3 +1,6 @@
+import truth from '../truth/truth.mjs'
+import v from '../v/v.mjs'
+
 const
 config=
 {
@@ -24,6 +27,7 @@ util=
 
 	evt2customEl:({path})=>path.find(x=>(x.tagName||'').match('-')),
 
+	//@todo mk should probably use assign nested
 	mk:(...opts)=>Object.assign({id:util.id()},...opts),
 
 	importFiles:paths=>Promise.all(paths.map(x=>fetch(x).then(x=>x.text()))),
@@ -132,6 +136,7 @@ if(typeof HTMLElement!=='undefined')
 			const shadow=this.attachShadow({mode:'open'})
 			if(!logic) return
 			let renderer=x=>x
+
 			this.state=truth(logic(state),(...args)=>renderer(args)).state
 			this.render=renderer=v.render(shadow,this,output)
 		}
