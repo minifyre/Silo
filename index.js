@@ -105,6 +105,7 @@ util.mkCustomEl=async function(url='',customEl,customMkr)
 	const
 	[css]=await util.importFiles([url+'index.css'])
 	config.css=css
+	console.warn('This is being deprecated!')
 	customElements.define(customEl,customMkr)
 }
 util.mkState=function(opts)
