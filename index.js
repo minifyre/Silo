@@ -43,7 +43,13 @@ input=function(state,evt)
 
 	return fn(state,new Proxy(evt,{get:(_,prop)=>prop==='target'?el:evt[prop]}))
 }
-
+util.asyncMap=function(arr,cb)
+{
+	return arr.reduce(async function(promiseArr,item,i,arr)
+	{
+		return [...await promiseArr,await cb(item,i,arr)]
+	},Promise.resolve([]))
+}
 util.assignNested=function(obj,...srcs)
 {
 	const isObj=x=>x&&typeof x==='object'&&!Array.isArray(x)
